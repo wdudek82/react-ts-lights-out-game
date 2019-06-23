@@ -1,0 +1,10 @@
+.grid-board__component {
+  display: inline-block;
+  background: #000;
+  border-radius: 5px;
+  //padding: 0.5rem;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 6px #000,
+    0 0 5px 12px #9b52ff;
+}
