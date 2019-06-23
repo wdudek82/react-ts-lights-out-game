@@ -4,12 +4,12 @@ import './Cell.scss';
 interface Props {
   isActive: boolean;
   cellIndex: number;
-  toggleCellState: (cellIndex: number) => void;
+  toggleCellsState: (cellIndex: number) => void;
 }
 
 const Cell = (props: Props): ReactElement => {
   const handleToggleCellState = (): void => {
-    props.toggleCellState(props.cellIndex);
+    props.toggleCellsState(props.cellIndex);
   };
 
   return (

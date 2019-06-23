@@ -1,6 +1,6 @@
 import React, { Component, ReactElement } from 'react';
 import CellRow from './CellRow';
-import './GridBoard.scss';
+import './GameBoard.scss';
 
 interface State {
   grid: boolean[][];
@@ -10,7 +10,7 @@ interface State {
 class GameBoard extends Component<{}, State> {
   public state = {
     grid: [
-      [false, false, true, false, false],
+      [false, false, false, false, false],
       [false, false, false, false, false],
       [false, false, false, false, false],
       [false, false, false, false, false],
@@ -35,9 +35,13 @@ class GameBoard extends Component<{}, State> {
     this.setState((state): State => ({ ...state, grid: newGrid }));
   };
 
-  private toggleCellState = (rowIndex: number, cellIndex: number): void => {
-    console.log('Toggle cell state', rowIndex, cellIndex);
+  private checkIsGameOver = (grid: boolean[][]): boolean => {
+    return grid.every((row): boolean => {
+      return row.every((cell): boolean => cell);
+    });
+  };
 
+  private toggleCellsState = (rowIndex: number, cellIndex: number): void => {
     const updGrid = this.state.grid;
     updGrid[rowIndex][cellIndex] = !updGrid[rowIndex][cellIndex];
 
@@ -45,7 +49,7 @@ class GameBoard extends Component<{}, State> {
     if (rowIndex) {
       updGrid[rowIndex - 1][cellIndex] = !updGrid[rowIndex - 1][cellIndex];
     }
-    if (rowIndex < this.state.grid.length - 1) {
+    if (rowIndex < updGrid.length - 1) {
       updGrid[rowIndex + 1][cellIndex] = !updGrid[rowIndex + 1][cellIndex];
     }
 
@@ -53,22 +57,31 @@ class GameBoard extends Component<{}, State> {
     if (cellIndex) {
       updGrid[rowIndex][cellIndex - 1] = !updGrid[rowIndex][cellIndex - 1];
     }
-    if (cellIndex < this.state.grid[0].length - 1) {
+    if (cellIndex < updGrid[0].length - 1) {
       updGrid[rowIndex][cellIndex + 1] = !updGrid[rowIndex][cellIndex + 1];
     }
 
-    this.setState((state): State => ({ ...state, grid: updGrid }));
+    console.log('Game is over:', this.checkIsGameOver(updGrid));
+
+    this.setState(
+      (state): State => ({
+        grid: updGrid,
+        isGameOver: this.checkIsGameOver(updGrid),
+      }),
+    );
   };
 
   private renderRows = (): ReactElement[] => {
     return this.state.grid.map(
       (row, index): ReactElement => {
+        const key = `row-${index}`;
+
         return (
           <CellRow
-            key={`row-${index}`}
+            key={key}
             row={row}
             rowIndex={index}
-            toggleCellState={this.toggleCellState}
+            toggleCellsState={this.toggleCellsState}
           />
         );
       },

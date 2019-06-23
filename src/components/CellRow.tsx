@@ -5,23 +5,25 @@ import './CellRow.scss';
 interface Props {
   row: boolean[];
   rowIndex: number;
-  toggleCellState: (rowIndex: number, cellIndex: number) => void;
+  toggleCellsState: (rowIndex: number, cellIndex: number) => void;
 }
 
 const CellRow = (props: Props): ReactElement => {
   const toggleCellState = (cellIndex: number): void => {
-    props.toggleCellState(props.rowIndex, cellIndex);
+    props.toggleCellsState(props.rowIndex, cellIndex);
   };
 
   const renderCells = (): ReactElement[] => {
     return props.row.map(
       (cell, index): ReactElement => {
+        const key = `cell-${props.rowIndex}-${index}`;
+
         return (
           <Cell
-            key={`cell-${index}`}
+            key={key}
             isActive={cell}
             cellIndex={index}
-            toggleCellState={toggleCellState}
+            toggleCellsState={toggleCellState}
           />
         );
       },
