@@ -4,6 +4,7 @@ import './GridBoard.scss';
 
 interface State {
   grid: boolean[][];
+  isGameOver: boolean;
 }
 
 class GameBoard extends Component<{}, State> {
@@ -15,6 +16,7 @@ class GameBoard extends Component<{}, State> {
       [false, false, false, false, false],
       [false, false, false, false, false],
     ],
+    isGameOver: false,
   };
 
   public componentDidMount(): void {
@@ -30,7 +32,7 @@ class GameBoard extends Component<{}, State> {
       });
     });
 
-    this.setState((): State => ({ grid: newGrid }));
+    this.setState((state): State => ({ ...state, grid: newGrid }));
   };
 
   private toggleCellState = (rowIndex: number, cellIndex: number): void => {
@@ -55,7 +57,7 @@ class GameBoard extends Component<{}, State> {
       updGrid[rowIndex][cellIndex + 1] = !updGrid[rowIndex][cellIndex + 1];
     }
 
-    this.setState((): State => ({ grid: updGrid }));
+    this.setState((state): State => ({ ...state, grid: updGrid }));
   };
 
   private renderRows = (): ReactElement[] => {
@@ -74,7 +76,12 @@ class GameBoard extends Component<{}, State> {
   };
 
   public render(): ReactElement {
-    return <div className="grid-board__component">{this.renderRows()}</div>;
+    // TODO: Move this to parent component (create new one: e.g. GameContainer)
+    return this.state.isGameOver ? (
+      <div>You win!</div>
+    ) : (
+      <div className="grid-board__component">{this.renderRows()}</div>
+    );
   }
 }
 
