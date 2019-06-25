@@ -2,8 +2,6 @@ import React, { Component, ReactElement } from 'react';
 import CellRow from './CellRow';
 import './GameBoard.scss';
 
-// type Dimention = (num: number) => num > 5;
-
 interface Props {
   gridWidth?: number;
   gridHeight?: number;
@@ -87,12 +85,14 @@ class GameBoard extends Component<Props, State> {
       updGrid[rowIndex][cellIndex + 1] = !updGrid[rowIndex][cellIndex + 1];
     }
 
-    console.log('Game is over:', this.checkIsGameOver(updGrid));
+    this.updateBoardState(updGrid);
+  };
 
+  private updateBoardState = (grid: boolean[][]): void => {
     this.setState(
       (state): State => ({
-        grid: updGrid,
-        isGameOver: this.checkIsGameOver(updGrid),
+        grid,
+        isGameOver: this.checkIsGameOver(grid),
       }),
     );
   };

@@ -31,8 +31,6 @@ class App extends Component<{}, State> {
   public render(): ReactElement {
     const { gridWidth, gridHeight } = this.state;
 
-    console.log(this.state);
-
     return (
       <div className="page">
         <div className="game__menu">
