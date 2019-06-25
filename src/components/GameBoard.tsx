@@ -69,6 +69,7 @@ class GameBoard extends Component<Props, State> {
     const updGrid = this.state.grid;
     updGrid[rowIndex][cellIndex] = !updGrid[rowIndex][cellIndex];
 
+    // TODO: Simplify
     // Toggle cells in adjacent rows
     if (rowIndex) {
       updGrid[rowIndex - 1][cellIndex] = !updGrid[rowIndex - 1][cellIndex];
