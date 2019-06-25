@@ -2,12 +2,20 @@ import React, { Component, ReactElement } from 'react';
 import CellRow from './CellRow';
 import './GameBoard.scss';
 
+// type Dimention = (num: number) => num > 5;
+
+interface Props {
+  gridWidth?: number;
+  gridHeight?: number;
+  chanceLightStartsOn?: number;
+}
+
 interface State {
   grid: boolean[][];
   isGameOver: boolean;
 }
 
-class GameBoard extends Component<{}, State> {
+class GameBoard extends Component<Props, State> {
   public state = {
     grid: [
       [false, false, false, false, false],
@@ -23,14 +31,32 @@ class GameBoard extends Component<{}, State> {
     this.generateNewGrid();
   }
 
-  private generateNewGrid = (): void => {
-    const newGrid = this.state.grid;
+  public componentDidUpdate(prevProps: Props): void {
+    if (
+      prevProps.gridHeight !== this.props.gridHeight ||
+      prevProps.gridWidth !== this.props.gridWidth
+    ) {
+      this.generateNewGrid();
+    }
+  }
 
-    newGrid.forEach((row, rowIndex): void => {
-      row.forEach((cell, cellIndex): void => {
-        newGrid[rowIndex][cellIndex] = Math.floor(Math.random() * 3) === 0;
-      });
-    });
+  private generateNewGrid = (): void => {
+    const {
+      gridHeight = 5,
+      gridWidth = 5,
+      chanceLightStartsOn = 0.25,
+    } = this.props;
+
+    const newGrid: boolean[][] = [];
+    let row: boolean[] = [];
+
+    for (let y = 0; y < gridWidth; y += 1) {
+      for (let x = 0; x < gridHeight; x += 1) {
+        row.push(Math.random() < chanceLightStartsOn);
+      }
+      newGrid.push(row);
+      row = [];
+    }
 
     this.setState((state): State => ({ ...state, grid: newGrid }));
   };
